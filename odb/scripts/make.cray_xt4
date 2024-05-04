@@ -1,0 +1,94 @@
+#-- Cray XT4 (target = catamount)
+
+ARCH=cray_xt4
+
+#-- Shareable lib creation disabled
+SHLIB_CMD=none
+SYSLIB=-ldl
+
+#-- Installation directory
+INSTALL_DIR=/vol/odb/ODBDIR/$(ARCH)/mytest
+
+#-- Fortran90 with Portland Group F90-compiler
+
+FC=ftn -g
+
+#-- Please note that with this MPICH-implementation
+#   the mpif.h is taken from $(MPICH_ROOT)/include,
+#   NOT from $(ROOTDIR)/odb/scripts
+
+FCFLAGS=\
+-O0 -Ktrap=fp -Kieee \
+-DCRAYXT \
+-DLINUX -DLITTLE -D$(ARCH) \
+-D_ABI64 \
+-Mbyteswapio -Mscalarsse
+
+#-fastsse
+
+FCFREEFMT=-Mfree
+
+FCFIXEDFMT=-Mfixed -r8
+
+#-I$(INSTALL_DIR)/include
+
+#-- C
+CC=cc -g
+CCFLAGS=\
+-O1 \
+-DCRAYXT \
+-DLINUX -DLITTLE -D$(ARCH) \
+-UHAS_XMOTIF \
+-DINTEGER_IS_INT -D_ABI64 \
+-DNO_ZLIB -DNO_CURSES \
+-DSTATIC_LINKING -DODBCS=0 \
+-Mscalarsse -Kieee
+
+#-fastsse
+
+#-- Front-end C (FE_* -stuff)
+FE_CC=gcc -g
+
+FE_CCFLAGS=\
+-O0 \
+-Werror \
+-DLINUX -DLITTLE
+
+FE_LDCC=$(FE_CC)
+
+BACKENDTOO=yes
+
+#-- C++
+CCPLUS=CC -g
+CCPLUSFLAGS=\
+-O1 \
+-DLINUX -DLITTLE -D_ABI64
+
+#-- C-linker
+LDCC=$(CC)
+
+#-- Fortran90-linker
+LDFC=$(FC)
+LDFC_SERIAL=$(FC)
+LDFCFLAGS=-Wl,-export-dynamic
+
+# -Wl,--warn-unresolved-symbols
+
+#-- Magics
+MAGLIB=-L$(ROOTDIR) -lodbdummy
+
+#-- Lex & Yacc
+YACC=bison --yacc -d
+#YACC=yacc -d
+YACCLEX_LIBS=-lm
+
+#-- MPI
+MPILIB=
+MPILIB_SERIAL=
+
+#-- X-windows
+#XWLIBS=-L/usr/X11R6/lib -lXm -lXt -lX11
+#XWLIBS=-L/usr/X11R6/lib64 -lXm -lXt -lX11
+XWLIBS=
+
+SHELL=/bin/ksh -e

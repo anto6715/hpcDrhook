@@ -1,0 +1,59 @@
+#!/bin/ksh
+#
+#  Usage: /bin/ksh -e get_cycle [-s] $ROOTDIR/odb/lib/version.c
+#
+#  Extracts CYCLE-string CYXXRY.ZZZ from odb/lib/version.c
+#
+#  If the first argument is '-s', then a Korn-shell script is created
+#
+
+set -eu
+
+if [[ $# -lt 1 ]] ; then
+  echo "Usage: /bin/ksh -e get_cycle [-s] $ROOTDIR/odb/lib/version.c" >&2
+  exit 1
+fi
+
+major=XX
+minor=Y.ZZZ
+
+create_shell=0
+if [[ "$1" = "-s" ]] ; then
+  create_shell=1
+  shift
+fi
+
+if [[ $# -ge 1 ]] ; then
+  file=$1
+  if [[ -r $file ]] ; then
+    major=$(perl -ne 'print $1 if (m/^#\s*define\s+VERSION_MAJOR\s+(\S+)/)' < $file 2>/dev/null)
+    minor=$(perl -ne 'print $1 if (m/^#\s*define\s+VERSION_MINOR\s+(\S+)/)' < $file 2>/dev/null)
+  fi
+fi
+CYCLE="CY${major}R${minor}"
+
+# The numeric is for example for "CY32R1.532" equal to "321532"
+numeric="${major}$(echo "${minor}" | sed 's/\.//')"
+
+if [[ $create_shell -eq 0 ]] ; then
+  echo "$CYCLE"
+else
+cat <<EOF
+#!/bin/ksh
+out="$CYCLE"
+if [[ \$# -ge 1 ]] ; then
+  var=\$(echo "\$1" | perl -pe 's/^-//; tr/A-Z/a-z/;')
+  if [[ "\$var" = @(mi|min|mino|minor) ]] ; then
+    out="$minor"
+  elif [[ "\$var" = @(ma|maj|majo|major)  ]] ; then
+    out="$major"
+  elif [[ "\$var" = @(n|nu|num|nume|numer|numeri|numeric) ]] ; then
+    out="$numeric"
+  fi
+fi
+echo "\$out"
+EOF
+fi
+  
+exit 0
+

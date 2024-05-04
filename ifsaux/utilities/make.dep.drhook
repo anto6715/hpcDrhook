@@ -1,0 +1,47 @@
+TASK=drhook
+LIB=$(ROOTDIR)/libdrhook.a
+VPATH=/users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include:/users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/module
+CCINC=-I/users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include -I/users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/module
+FCINC=$(CCINC) 
+ODB_FILTER=no
+OBJS= \
+addrdiff.o \
+countingsort.o \
+ecqsort.o \
+fnecsx.o \
+gentrbk.o \
+getcurheap.o \
+gethwm.o \
+get_max_threads.o \
+get_num_threads.o \
+getpag.o \
+getrss.o \
+getstackusage.o \
+getstatm.o \
+getstk.o \
+get_thread_id.o \
+gnomesort.o \
+jsort.o \
+linuxtrbk.o \
+rsort32.o \
+rsort64.o 
+# DO NOT DELETE THIS LINE - used by make depend
+countingsort.o: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/intercept_alloc.ok /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/raise.ok
+ecqsort.o: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/intercept_alloc.ok /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/raise.ok
+fnecsx.o: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/intercept_alloc.ok /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/raise.ok
+gentrbk.o: ifcore.o parkind1.o
+get_max_threads.o: parkind1.o yomoml.o
+get_num_threads.o: parkind1.o yomoml.o
+get_thread_id.o: parkind1.o yomoml.o
+getcurheap.o: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/drhook.ok /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/intercept_alloc.ok /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/raise.ok
+gethwm.o: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/getstatm.ok
+getrss.o: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/getstatm.ok
+getstatm.o: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/getstatm.ok
+linuxtrbk.o: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/cargs.ok
+rsort32.o: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/intercept_alloc.ok /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/raise.ok
+rsort64.o: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/intercept_alloc.ok /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/raise.ok
+/users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/cargs.ok: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/cargs.h
+/users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/drhook.ok: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/drhook.h
+/users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/getstatm.ok: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/getstatm.h
+/users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/intercept_alloc.ok: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/intercept_alloc.h
+/users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/raise.ok: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/raise.h

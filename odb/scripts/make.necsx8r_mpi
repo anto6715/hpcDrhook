@@ -1,0 +1,102 @@
+#-- NEC SX-8R
+#   Derived from make.necsx -file
+#
+#   Based on NEC SX-8R experience in Meteo-France (by Sami Saarinen, Deborah Salmond, Mats Hamrud)
+#
+#   ** Note-1: -DNEC is gone and only -DNECSX is left.
+#   ** Note-2: Use make.necsx8r_memtrace if you want F90 allocate/deallocate memory tracing feature (-DINTERCEPT_ALLOC)
+#
+
+ARCH=necsx8r_mpi
+
+#-- Installation directory
+INSTALL_DIR=/not/defined
+
+SYSLIB=-lgen -lcpp -lpthread
+
+#FTRACE=-ftrace
+#FTRACE=-Nftrace
+FTRACE=
+
+#POPENMP=-P openmp
+POPENMP=
+
+# Fortran compiler
+FC=sxmpif90 -gv $(FTRACE) $(POPENMP)
+FCFLAGS=-D$(ARCH) -DNECSX -DODBCS=0 -V -c -USX -Cvsafe -Wf,-pvctl fullmsg vwork=stack,-L fmtlist transform
+
+FCFREEFMT=-f4
+
+FCFIXEDFMT=-f3 -Wf,-A dbl4
+
+#-- C
+CC=$(ROOTDIR)/sxmpicc_wrapper -gv -traceback $(FTRACE)
+CCFLAGS=\
+-woff=177:236:550 -O -D$(ARCH) \
+-DNO_ZLIB -DNO_CURSES -USX \
+-DNECSX -DSTATIC_LINKING -DODBCS=0 \
+-UINTERCEPT_ALLOC \
+-D_ABI64 \
+-UHAS_XMOTIF \
+-Cvsafe -pvctl,fullmsg,vwork=stack \
+-DDBXDEBUGGER=/bin/pdbx
+
+#-- C-codes sharing directory with yacc.y will be compiled with no vectorization (like backend odb98be.x)
+CCEXTRA=-DSTD_MEM_ALLOC=1 -Nv -UINTERCEPT_ALLOC -Cssafe -pvctl,nomsg
+
+#-- C++
+CCPLUS=sxmpic++ -gv
+CCPLUSFLAGS=$(CCFLAGS)
+
+#-- C-linker
+LDCC=sxmpicc -gv -traceback $(FTRACE) -f90lib
+LDCCFLAGS=-V -USX -Wl,-h,lib_cyclic
+
+#-- Fortran90-linker
+LDFC_SERIAL=sxf90 -gv $(FTRACE) $(POPENMP)
+LDFC=$(FC)
+LDFCFLAGS=-V -USX -Wl,-h,lib_cyclic
+
+# -Wl,-h,muldefs
+
+AR=sxar
+
+# Build odb98.x compiler for Linux front-end compiler (TX7)
+FE_YACC=bison --yacc -d
+FE_LEX=$(ROOTDIR)/flexfix -l -v
+FE_CC=gcc -g -fPIC
+FE_CCFLAGS=\
+-O1 \
+-Werror \
+-DLINUX -DLITTLE \
+-DINTEGER_IS_INT \
+-DHAS_NETCDF \
+-DNECTX -UINTERCEPT_ALLOC
+FE_LDCC=$(FE_CC)
+FE_LDCCFLAGS=-rdynamic
+FE_YACCLEX_LIBS=-lfl -lm
+FE_SYSLIB=-ldl
+FE_AR=ar
+
+BACKENDTOO=yes
+
+#-- Magics
+MAGLIB=-L$(ROOTDIR) -lodbdummy
+
+#-- Lex & Yacc
+YACC=yacc -d
+
+YACCLEX_LIBS=-lm
+
+#-- MPI
+#MPILIB=-lpmpi -lmpi
+#MPILIB=$(MPILIB_SERIAL)
+MPILIB=-lpmpi -lmpi
+
+#-- X-windows
+XWLIBS=
+
+SHELL=/bin/ksh -e
+
+ECLIB=-L$(ROOTDIR) -lodbec
+EMOSLIB=-L$(ROOTDIR) -lodbemos

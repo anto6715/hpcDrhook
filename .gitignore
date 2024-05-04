@@ -1,0 +1,9 @@
+# extensions
+*.o
+*.mod
+*.a
+*.exe
+
+# directories
+.idea
+.vscode

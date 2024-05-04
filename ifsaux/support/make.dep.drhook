@@ -1,0 +1,43 @@
+TASK=drhook
+LIB=$(ROOTDIR)/libdrhook.a
+VPATH=/users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include:/users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/module
+CCINC=-I/users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include -I/users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/module
+FCINC=$(CCINC) 
+ODB_FILTER=no
+OBJS= \
+abor1.o \
+cargs.o \
+cdrhookinit.o \
+clock.o \
+cmpl_binding.o \
+coml_binding.o \
+convin.o \
+convout.o \
+cptime.o \
+crc.o \
+drhook.o \
+dr_hook_procinfo.o \
+dr_hook_prt.o \
+dr_hook_util.o \
+dr_hook_util_multi.o \
+endian.o \
+env.o \
+mpe_locking.o \
+timef.o 
+# DO NOT DELETE THIS LINE - used by make depend
+abor1.o: mpl_module.o parkind1.o sdl_module.o yomlun_ifsaux.o
+cargs.o: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/cargs.ok
+cdrhookinit.o: parkind1.o yomhook.o
+cmpl_binding.o: mpl_module.o parkind1.o
+coml_binding.o: parkind1.o yomoml.o
+crc.o: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/crc.ok
+dr_hook_procinfo.o: mpl_data_module.o parkind1.o
+dr_hook_prt.o: parkind1.o
+dr_hook_util.o: ecsort.o mpl_arg_mod.o mpl_init_mod.o parkind1.o yomhook.o yomoml.o
+dr_hook_util_multi.o: parkind1.o yomhook.o yomoml.o
+drhook.o: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/drhook.ok /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/cargs.ok /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/crc.ok /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/raise.ok
+env.o: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/raise.ok
+/users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/cargs.ok: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/cargs.h
+/users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/crc.ok: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/crc.h
+/users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/drhook.ok: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/drhook.h
+/users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/raise.ok: /users/home/ans012/model/3dvar/external/drhook_CY33R1.007_export/ifsaux/include/raise.h

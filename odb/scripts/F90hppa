@@ -1,0 +1,34 @@
+#!/bin/ksh
+#
+# F90hppa
+#
+# A script to compile *.F90 files (suffix in capital letters) on HPPA
+# since their f90-compiler accepts only lower case letters
+#
+#
+#
+
+args=
+rmlinks=
+
+for f in $*
+do
+  echo $f | egrep '\.F90$' >/dev/null 2>&1
+  if [[ $? -eq 0 ]] ; then
+    name=$(echo $f | sed 's/\.F90$/.f90/')
+    ln -s $f $name >/dev/null 2>&1
+    rmlinks="$rmlinks $name"
+    args="$args $name"
+  else
+    args="$args $f"
+  fi
+done
+
+rc=0
+cmd="f90 $args"
+echo "Running $cmd ..."
+$cmd || rc=$?
+
+rm -f $rmlinks
+
+exit $rc

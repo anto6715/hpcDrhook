@@ -1,0 +1,103 @@
+#-- NEC SX
+#   Derived from make.necsx8r -file
+#
+#   Based on NEC SX-6 experience in BOM (by Paul Ryan)
+#
+#   ** Note-1: -DNEC is gone and only -DNECSX is left.
+#
+
+ARCH=necsx
+
+#-- Installation directory
+INSTALL_DIR=/not/defined
+
+SYSLIB=-lgen -lcpp -lpthread
+
+#FTRACE=-ftrace
+#FTRACE=-Nftrace
+#FTRACE=-ftrace -acct
+
+#POPENMP=-P openmp
+POPENMP=
+
+# Fortran compiler
+FC=sxmpif90 $(FTRACE) $(POPENMP)
+FCFLAGS=-D$(ARCH) -DNECSX -DBOM -DODBCS=0 -DNO_ZLIB -DNO_CURSES -DUSE_8_BYTE_WORDS -c -USX \
+-Wf,-pvctl fullmsg vwork=stack,-L fmtlist transform,-A idbl4,-ptr byte
+
+FCFREEFMT=-f4 -Pstack 
+#-Wf,-init heap=nan stack=nan
+
+FCFIXEDFMT=-f3 -Pstatic -Wf,-init heap=zero stack=zero
+
+#-- C
+CC=$(ROOTDIR)/sxmpicc_wrapper -traceback $(FTRACE)
+CCFLAGS=\
+-woff=177:236:550 -O -D$(ARCH) \
+-DNO_ZLIB -DNO_CURSES -USX \
+-DNECSX -DBOM -DSTATIC_LINKING -DODBCS=0 \
+-UINTERCEPT_ALLOC \
+-DINTEGER_IS_INT \
+-D_ABI64 \
+-UHAS_XMOTIF \
+-Cvsafe -pvctl,fullmsg,vwork=stack \
+-DDBXDEBUGGER=/bin/pdbx
+
+#-- C-codes sharing directory with yacc.y will be compiled with no vectorization (like backend odb98be.x)
+CCEXTRA=-DSTD_MEM_ALLOC=1 -Nv -UINTERCEPT_ALLOC -Cssafe -pvctl,nomsg
+
+#-- C++
+CCPLUS=sxmpic++
+CCPLUSFLAGS=$(CCFLAGS)
+
+#-- C-linker
+LDCC=sxmpicc -traceback $(FTRACE) -f90lib
+LDCCFLAGS=-V -USX -Wl,-h,lib_cyclic
+
+#-- Fortran90-linker
+LDFC_SERIAL=sxmpif90 $(FTRACE) $(POPENMP)
+LDFC=$(FC)
+LDFCFLAGS=-V -dw -USX -Wl,-h,lib_cyclic
+
+# -Wl,-h,muldefs
+
+AR=sxar
+
+# Build odb98.x compiler for Linux front-end compiler (TX7)
+FE_YACC=bison --yacc -d
+FE_LEX=$(ROOTDIR)/flexfix -l -v
+FE_CC=gcc -g -fPIC
+FE_CCFLAGS=\
+-O1 \
+-Werror \
+-DLINUX -DLITTLE \
+-DINTEGER_IS_INT \
+-DHAS_NETCDF \
+-DNECTX -UINTERCEPT_ALLOC
+FE_LDCC=$(FE_CC)
+FE_LDCCFLAGS=-rdynamic
+FE_YACCLEX_LIBS=-lfl -lm
+FE_SYSLIB=-ldl
+FE_AR=ar
+
+BACKENDTOO=no
+
+#-- Magics
+MAGLIB=-L$(ROOTDIR) -lodbdummy
+
+#-- Lex & Yacc
+YACC=yacc -d
+
+YACCLEX_LIBS=-lm
+
+#-- MPI
+MPILIB=
+#MPILIB=$(MPILIB_SERIAL)
+
+#-- X-windows
+XWLIBS=
+
+SHELL=/bin/ksh -e
+
+ECLIB=-L$(ROOTDIR) -lodbec
+EMOSLIB=-L$(ROOTDIR) -lodbemos
